@@ -35,11 +35,21 @@ else:
   #section -> class=jobs 정보를 모두 가져옴
   job_sections = soup.find_all('section', class_="jobs")
   
-  #job_section 중에서 li인 항목만 가져옴
+  #[red] job_section 중에서 li인 항목만 가져옴/ 3개
   for job_section in job_sections:
     job_posts = job_section.find_all('li')
 
-    #job_post중에서 필요없는 정보제거(view_all)
+    #job_post중에서 필요없는 정보제거(view_all) / 마지막 1개
     job_posts.pop(-1)
     for job_post in job_posts:
-      print(job_post)
+
+      #[yellow] anchor를 찾는다. 2개
+      anchors = job_post.find_all('a')
+      anchor = anchors[1]
+      company, kind, region = anchor.find_all('span', class_='company')
+
+      link = anchor['href']
+      title = anchor.find('title')
+
+      print(link, title, company, kind, region)
+      print("//////////////")
