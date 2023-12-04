@@ -22,14 +22,14 @@ job_posts = job_list.find_all("td", class_="company position company_and_positio
 job_posts.pop(0)
 
 for job_post in job_posts:
-  location, salary = job_post.find_all('div', class_ = "location")
-  print(location, salary)
-  #값이 1개이거나 3개인 항목이 있음.ㅠㅠㅠㅠ 어떻게할까.
-
+  job_len = job_post.find_all('div', class_ = "location")
+  if len(job_len) != 2:
+    pass #company만 있거나 Salary만 있는 예외항목은 pass함
+  else:
+    location, salary = job_post.find_all('div', class_ = "location")
 
   title = job_post.find('h2', itemprop = "title")
   company = job_post.find('h3', itemprop = "name")
-  
   link = job_post.find('a')['href'] #bs4가 dic형태로 값을 가져오므로 key값(href)을 적으면 value값이 조회됨.
 
   job_data = {
