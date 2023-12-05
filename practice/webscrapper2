@@ -1,0 +1,40 @@
+from bs4 import BeautifulSoup
+import requests
+
+def extract_jobs(term):
+  url = f"https://remoteok.com/remote-{term}-jobs"
+  request = requests.get(url, headers={"User-Agent": "Kimchi"})
+  if request.status_code == 200:
+    results = []
+    soup = BeautifulSoup(request.text, "html.parser")
+    
+    # write your ✨magical✨ code here
+
+    job_posts = soup.find_all("td", class_="company position company_and_position") 
+    
+    #맨 첫번째 있는 데이 필요 없으므로 삭제한다.
+    job_posts.pop(0)
+
+    for job_post in job_posts:
+    
+      title = job_post.find('h2', itemprop = "title")
+      company = job_post.find('h3', itemprop = "name")
+      link = job_post.find('a')['href']
+      location = job_post.find_all('div', class_='location')[0] 
+      salary = job_post.find_all('div', class_='location')[-1] #location list에서 마지막 item. ahha.
+
+      job_data = {
+        'title' : title.string,
+        'company' : company.string,
+        'location' : location.string,
+        'salary' : salary.string,
+        'link' : f"https://remoteok.com/{link}"
+      }
+    
+      results.append(job_data)
+    return results
+  
+  else:
+    print("Can't get jobs.")
+
+extract_jobs("python")
