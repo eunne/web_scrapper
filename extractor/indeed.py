@@ -23,14 +23,14 @@ def get_page_count(keyword):
 def extract_indeed_jobs(keyword):
   #페이지 수를 가져오고, 해당 페이지 수만큼 아래 스크랩핑을 반복하도록 명령
   pages = get_page_count(keyword)
-  print("found", pages, "pages")
+  #print("found", pages, "pages")
   results = []
   for page in range(pages):
     browser = webdriver.Chrome()
     final_url = browser.get(f"https://kr.indeed.com/jobs?q={keyword}&start={page*10}")
-    print("Requesting", browser)
-    while():
-      True
+    #print("Requesting", browser)
+    '''while():
+      True'''
 
     #beutifulsoup이 html 페이지를 읽어오는 것임
     soup = BeautifulSoup(browser.page_source, "html.parser")
@@ -48,16 +48,19 @@ def extract_indeed_jobs(keyword):
         title = anchor["aria-label"]
         link = anchor["href"]
 
-        position = job.find("span", class_="css-1x7z1ps eu4oa1w0")
+        company = job.find("span", class_="css-1x7z1ps eu4oa1w0")
         location = job.find("div", class_="css-t4u72d eu4oa1w0")
 
         job_data = {
-          'title' : title,
-          'link' : link,
-          'position' : position.string.strip(),
-          'location' : location.string.strip()
+          'title' : title.replace(",",""),
+          'company' : company.string.strip().replace(",",""),
+          'location' : location.string.strip().replace(",",""),
+          'link' : f"https://kr.indeed.com/{link}"
         }
 
         results.append(job_data)
 
   return results
+
+
+extract_indeed_jobs("python")

@@ -28,21 +28,23 @@ def extract_wwr_jobs(keyword):
         #[yellow] anchor를 찾는다. 2개
         anchors = job_post.find_all('a')
         anchor = anchors[1]
-        company, kind, region = anchor.find_all('span', class_='company')
+        company, kind, location = anchor.find_all('span', class_='company')
 
         link = anchor['href']
         title = anchor.find('span', class_='title')
 
+        
+
         #job data를 dic형식으로 만들기
         job_data = {
-          'link' : f"https://weworkremotely.com/{link}",
-          'company': company.string,
-          'title': title.string,
-          'kind': kind.string,
-          'region': region.string
+          'title': title.string.replace(","," "),
+          'company': company.string.replace(","," "),
+          #'kind': kind.string,
+          'location': location.string.replace(","," "),
+          'link' : f"https://weworkremotely.com/{link}"
         }
 
         #job data가 forloop를 돌면서 없어지니까 반복문 밖의 list에 저장시키기
         results.append(job_data)
 
-    return results  
+      return results  
