@@ -11,7 +11,8 @@ def home():
 
 @app.route("/search")
 def search():
-  return render_template("search.html")
+  keyword = request.args.get("keyword")
+  return render_template("search.html", keyword=keyword)
 
 #server 만듦. user의 request받을 수 있음
 app.run("127.0.0.1", debug=True)
