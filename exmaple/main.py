@@ -12,13 +12,20 @@ app = Flask(__name__)
 def home():
   return render_template("home.html", name="Eunne")
 
+#make db
+db = {}
+
 @app.route("/search")
 def search():
   keyword = request.args.get("keyword")
-  indeed = extract_indeed_jobs("keyword")
-  wwr = extract_wwr_jobs("keyword")
-  linkedin = extract_linkedin_jobs("keyword")
-  jobs = indeed + wwr + linkedin
+  if keyword in db:
+    jobs = db[keyword]
+  else:
+    indeed = extract_indeed_jobs("keyword")
+    wwr = extract_wwr_jobs("keyword")
+    linkedin = extract_linkedin_jobs("keyword")
+    jobs = indeed + wwr + linkedin
+    db[keyword] = jobs
   return render_template("search.html", keyword=keyword, jobs=jobs)
 
 #server 만듦. user의 request받을 수 있음
