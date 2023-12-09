@@ -18,6 +18,8 @@ db = {}
 @app.route("/search")
 def search():
   keyword = request.args.get("keyword")
+  if keyword == None or keyword == "":
+    return redirect("/")
   if keyword in db:
     jobs = db[keyword]
   else:
