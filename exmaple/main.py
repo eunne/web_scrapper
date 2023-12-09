@@ -1,4 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
+from extractor.indeed import extract_indeed_jobs
+from extractor.wwr import extract_wwr_jobs
+from extractor.linkedin import extract_linkedin_jobs
 
 app = Flask(__name__)
 
@@ -12,7 +15,11 @@ def home():
 @app.route("/search")
 def search():
   keyword = request.args.get("keyword")
-  return render_template("search.html", keyword=keyword)
+  indeed = extract_indeed_jobs("keyword")
+  wwr = extract_wwr_jobs("keyword")
+  linkedin = extract_linkedin_jobs("keyword")
+  jobs = indeed + wwr + linkedin
+  return render_template("search.html", keyword=keyword, jobs=jobs)
 
 #server 만듦. user의 request받을 수 있음
 app.run("127.0.0.1", debug=True)

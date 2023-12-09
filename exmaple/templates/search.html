@@ -7,5 +7,11 @@
 </head>
 <body>
   <h1>Your Jobs here</h1>
+  {% for job in jobs %}
+    <div>{{job.postion}}</div>
+    <div>{{job.company}}</div>
+    <div>{{job.location}}</div>
+    <div><a href={{job.link}}" target="_balnk">Apply now &rarr;</a></div>
+  {% endfor %}
 </body>
 </html>
